@@ -10,5 +10,7 @@ public interface TeamService {
 
     Team findTeamByName(String teamName);
 
+    List<Team> findAllAndSort ();
+
     Team save(Team team);
 }

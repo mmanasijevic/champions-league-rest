@@ -1,19 +1,8 @@
-package net.jdevelopment.championsleaguerest.model;
+package net.jdevelopment.championsleaguerest.ui;
 
-import lombok.*;
-import net.jdevelopment.championsleaguerest.ui.TeamUI;
+public class TeamUI {
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-public class Team {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int rank;
     private String team;
     private int playedGames;
     private int points;
@@ -24,27 +13,24 @@ public class Team {
     private int lose;
     private int draw;
 
-    public Team() {
-    }
-
-    public Team(String team) {
+    public TeamUI(String team, int playedGames, int points, int goals, int goalsAgainst, int goalDifference, int win, int lose, int draw) {
         this.team = team;
-        this.playedGames = 0;
-        this.points = 0;
-        this.goals = 0;
-        this.goalsAgainst = 0;
-        this.goalDifference = 0;
-        this.win = 0;
-        this.lose = 0;
-        this.draw = 0;
+        this.playedGames = playedGames;
+        this.points = points;
+        this.goals = goals;
+        this.goalsAgainst = goalsAgainst;
+        this.goalDifference = goalDifference;
+        this.win = win;
+        this.lose = lose;
+        this.draw = draw;
     }
 
-    public Long getId() {
-        return id;
+    public int getRank() {
+        return rank;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     public String getTeam() {
@@ -117,10 +103,5 @@ public class Team {
 
     public void setDraw(int draw) {
         this.draw = draw;
-    }
-
-    public TeamUI toTeamUI ()
-    {
-        return new TeamUI(team, playedGames, points, goals, goalsAgainst, goalDifference, win, lose, draw);
     }
 }

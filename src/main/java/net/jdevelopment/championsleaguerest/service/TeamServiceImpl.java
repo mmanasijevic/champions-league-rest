@@ -28,6 +28,11 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public List<Team> findAllAndSort() {
+        return teamRepository.findAllAndSort();
+    }
+
+    @Override
     public Team save(Team team) {
         return teamRepository.save(team);
     }

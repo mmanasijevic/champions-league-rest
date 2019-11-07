@@ -2,7 +2,8 @@ package net.jdevelopment.championsleaguerest.controller;
 
 import net.jdevelopment.championsleaguerest.model.Team;
 import net.jdevelopment.championsleaguerest.service.TeamService;
-import net.jdevelopment.championsleaguerest.ui.Game;
+import net.jdevelopment.championsleaguerest.ui.GameUI;
+import net.jdevelopment.championsleaguerest.ui.TeamUI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,19 +30,31 @@ public class ChampionsLeagueController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = API_PATH + "/games")
-    public List<Team> getAllTeams () {
-        return teamService.findAll();
+    public List<TeamUI> getAllTeams () {
+        List<TeamUI> allTeamsUI = new ArrayList<>();
+
+        List<Team> allAndSort = teamService.findAllAndSort();
+        for (int i = 0; i < allAndSort.size(); i ++) {
+            Team team = allAndSort.get(i);
+            TeamUI teamUI = team.toTeamUI();
+            teamUI.setRank(i + 1);
+
+            allTeamsUI.add(teamUI);
+        }
+
+        return allTeamsUI;
     }
 
     @RequestMapping(method = RequestMethod.POST, path = API_PATH + "/games")
-    public void addGames (@RequestBody List<Game> listOfGames) {
-        for (Game game : listOfGames) {
+    public List<TeamUI> addGames (@RequestBody List<GameUI> listOfGameUIS) {
+        for (GameUI gameUI : listOfGameUIS) {
 
-            Team homeTeam = teamService.findTeamByName(game.getHomeTeam());
-            Team awayTeam = teamService.findTeamByName(game.getAwayTeam());
+            Team homeTeam = teamService.findTeamByName(gameUI.getHomeTeam());
+            Team awayTeam = teamService.findTeamByName(gameUI.getAwayTeam());
 
-            String score = game.getScore();
+            String score = gameUI.getScore();
             String[] scoreArray = score.split(":");
+
             int homeGoals = Integer.parseInt(scoreArray[0]);
             int awayGoals = Integer.parseInt(scoreArray[1]);
 
@@ -85,5 +99,7 @@ public class ChampionsLeagueController {
             teamService.save(awayTeam);
         }
 
+        // just return all teams
+        return getAllTeams();
     }
 }

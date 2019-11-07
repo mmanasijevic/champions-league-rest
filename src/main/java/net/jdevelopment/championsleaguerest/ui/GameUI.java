@@ -1,6 +1,6 @@
 package net.jdevelopment.championsleaguerest.ui;
 
-public class Game {
+public class GameUI {
 
     private String leagueTitle;
     private int matchday;
@@ -10,7 +10,7 @@ public class Game {
     private String kickoffAt;
     private String score;
 
-    public Game() {
+    public GameUI() {
     }
 
     public String getLeagueTitle() {
